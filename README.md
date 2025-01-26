@@ -1,162 +1,84 @@
-Fake News Classification
+# Fake News Classification using NLP
 
-This project demonstrates a Fake News Classification pipeline using Natural Language Processing (NLP) techniques and Machine Learning models to distinguish between fake and genuine news articles.
+This project demonstrates a machine learning pipeline to classify news articles as fake or genuine using Natural Language Processing (NLP) techniques. The process involves data preprocessing, feature extraction, and model building.
 
-Table of Contents
+---
 
-Installation
+## Project Overview
 
-Dataset
+### 1. Dataset
+The project uses two datasets:
+- `Fake.csv`: Contains fake news articles.
+- `True.csv`: Contains genuine news articles.
 
-Data Preprocessing
+Both datasets are preprocessed and merged into a single dataset with the following structure:
+- `text`: The content of the news article.
+- `genuineness`: A binary label where 0 represents fake news and 1 represents genuine news.
 
-Tokenization
+### 2. Preprocessing Steps
+1. **Tokenization**: Splitting text into individual words using the `word_tokenize` function from the NLTK library.
+2. **Stemming**: Reducing words to their root forms using the Snowball Stemmer.
+3. **Stopword Removal**: Filtering out short words to clean the text further.
+4. **Data Splitting**: Splitting the data into training and testing sets using an 80-20 split.
 
-Stemming
+### 3. Feature Engineering
+- **TF-IDF Vectorization**: Transforming text data into numerical features using the Term Frequency-Inverse Document Frequency (TF-IDF) method with `TfidfVectorizer`. The vectorizer is configured with a `max_df` of 0.7 to ignore overly common terms.
 
-Removing Stop Words
+### 4. Models Used
+1. **Logistic Regression**:
+   - A simple yet effective classifier for binary classification tasks.
+   - Achieved an accuracy score of `scr1` (value will be printed during runtime).
 
-Splitting Dataset
+2. **Passive Aggressive Classifier**:
+   - Suitable for large-scale learning with streaming data.
+   - Achieved an accuracy score of `scr2` (value will be printed during runtime).
 
-Vectorization (TF-IDF)
+---
 
-Machine Learning Models
+## Prerequisites
+Ensure the following libraries are installed before running the script:
+- `pandas`
+- `nltk`
+- `scikit-learn`
 
-Logistic Regression
-
-Passive Aggressive Classifier
-
-Results
-
-Installation
-
-Clone the repository:
-
-git clone <repository_url>
-
-Navigate to the project directory and install dependencies:
-
+Install these using:
+```bash
 pip install nltk pandas scikit-learn
+```
 
-Download the NLTK 'punkt' tokenizer:
+---
 
-import nltk
-nltk.download('punkt')
+## Usage Instructions
+1. Download the `Fake.csv` and `True.csv` datasets and save them in the specified directory.
+2. Update the file paths in the script to point to the datasets.
+3. Run the script to:
+   - Preprocess the data.
+   - Train the models.
+   - Evaluate the models and print the accuracy scores.
 
-Dataset
+---
 
-Fake.csv: Contains fake news articles.
+## Script Walkthrough
+### Key Sections:
+- **Data Loading**: Merging and labeling the datasets.
+- **Data Preprocessing**: Cleaning and tokenizing the text.
+- **Feature Extraction**: Generating numerical features with TF-IDF.
+- **Model Training and Evaluation**: Using Logistic Regression and Passive Aggressive Classifier for classification.
 
-True.csv: Contains genuine news articles.
+### Outputs:
+- Predicted labels for the test set.
+- Accuracy scores for both models.
 
-Dataset Preparation
+---
 
-Both datasets are combined, and a new column genuineness is added:
+## Improvements and Future Work
+- Implement additional preprocessing techniques (e.g., lemmatization).
+- Test with additional machine learning models or deep learning architectures (e.g., RNNs, BERT).
+- Perform hyperparameter tuning to improve model performance.
+- Visualize the data and results for better insights.
 
-0: Fake news
+---
 
-1: Genuine news
-
-Columns like title, subject, and date are dropped to focus on the text content.
-
-Data Preprocessing
-
-Tokenization
-
-The text column is tokenized into individual words using NLTK's word_tokenize function.
-
-Stemming
-
-Words are reduced to their root form using the Snowball Stemmer from NLTK.
-
-Removing Stop Words
-
-Words with a length less than or equal to 2 are removed.
-
-Example Code:
-
-from nltk.tokenize import word_tokenize
-from nltk.stem.snowball import SnowballStemmer
-
-data['text'] = data['text'].apply(word_tokenize)
-
-sb = SnowballStemmer("english", ignore_stopwords=False)
-
-def stem_it(text):
-  return [sb.stem(word) for word in text]
-
-data['text'] = data['text'].apply(stem_it)
-
-def stopword_remover(text):
-  return [word for word in text if len(word) > 2]
-
-data['text'] = data['text'].apply(stopword_remover)
-data['text'] = data['text'].apply(' '.join)
-
-Splitting Dataset
-
-The dataset is split into training and testing sets:
-
-Training set: 75%
-
-Testing set: 25%
-
-from sklearn.model_selection import train_test_split
-
-X_train, X_test, y_train, y_test = train_test_split(data['text'], data['genuineness'], test_size=0.25)
-
-Vectorization (TF-IDF)
-
-The text data is vectorized using the TF-IDF (Term Frequency-Inverse Document Frequency) method:
-
-from sklearn.feature_extraction.text import TfidfVectorizer
-
-tfidf = TfidfVectorizer(max_df=0.7)
-tfidf_train = tfidf.fit_transform(X_train)
-tfidf_test = tfidf.transform(X_test)
-
-Machine Learning Models
-
-Logistic Regression
-
-A Logistic Regression model is trained with a maximum of 900 iterations.
-
-from sklearn.linear_model import LogisticRegression
-
-model1 = LogisticRegression(max_iter=900)
-model1.fit(tfidf_train, y_train)
-
-pred1 = model1.predict(tfidf_test)
-from sklearn.metrics import accuracy_score
-scr1 = accuracy_score(y_test, pred1)
-
-Passive Aggressive Classifier
-
-A Passive Aggressive Classifier is trained to handle binary classification tasks.
-
-from sklearn.linear_model import PassiveAggressiveClassifier
-
-model2 = PassiveAggressiveClassifier(max_iter=100)
-model2.fit(tfidf_train, y_train)
-
-pred2 = model2.predict(tfidf_test)
-scr2 = accuracy_score(y_test, pred2)
-
-Results
-
-Model
-
-Accuracy
-
-Logistic Regression
-
-scr1
-
-Passive Aggressive Classifier
-
-scr2
-
-Contributing
-
-Feel free to open issues or submit pull requests for improvements or new features!
-
+## Acknowledgments
+- NLTK library for text preprocessing.
+- Scikit-learn for model implementation.
